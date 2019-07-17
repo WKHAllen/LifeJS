@@ -70,8 +70,7 @@ function maxHeight() {
     return Math.floor((windowHeight - 2 * bodyPadding - borderSize) / (cellSize + borderSize));
 }
 
-function windowResize() {
-    console.log(maxWidth(), maxHeight());
+function windowResized() {
     document.getElementById("width-slider").max = maxWidth();
     document.getElementById("height-slider").max = maxHeight();
 }
@@ -79,7 +78,7 @@ function windowResize() {
 function setup() {
     populateStates();
     document.getElementsByTagName("body")[0].padding = bodyPadding;
-    windowResize();
+    windowResized();
     var width = localStorage.getItem(localWidth);
     var height = localStorage.getItem(localHeight);
     var toroidal = JSON.parse(localStorage.getItem(localToroidal));
