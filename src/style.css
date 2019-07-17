@@ -25,10 +25,10 @@ h1 {
 .gray-button {
     background-color: #7f7f7f;
     color: white;
-    padding: 8px;
+    padding: 8px 12px;
     margin-top: 16px;
     border: none;
-    border-radius: 8px;
+    border-radius: 9999px;
     outline: none;
 }
 
@@ -45,3 +45,11 @@ canvas {
     margin: auto;
     display: block;
 }
+
+input[type=text], select {
+    padding: 8px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    outline: none;
+  }

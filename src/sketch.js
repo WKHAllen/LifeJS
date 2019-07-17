@@ -13,6 +13,7 @@ const localToroidal = "LifeToroidal";
 const localChance = "LifeChance";
 const localSpeed = "LifeSpeed";
 const localBoard = "LifeBoard";
+const localStates = "LifeStates";
 
 var toggled = [];
 
@@ -176,3 +177,75 @@ function updateSpeed() {
     localStorage.setItem(localSpeed, value);
     speed = value;
 }
+
+function stripWhitespace(str) {
+    return str.replace(/^\s+|\s+$/g, "");
+}
+
+function populateStates() {
+    var states = JSON.parse(localStorage.getItem(localStates));
+    if (states === null) {
+        states = {};
+        localStorage.setItem(localStates, "{}");
+    }
+    var stateSelect = document.getElementById("state-select");
+    var newState;
+    for (let state of Object.keys(states)) {
+        newState = document.createElement("option");
+        newState.innerHTML = state;
+        stateSelect.appendChild(newState);
+    }
+}
+
+function saveState() {
+    var states = JSON.parse(localStorage.getItem(localStates));
+    var stateName = stripWhitespace(document.getElementById("state-name").value);
+    if (stateName === "") {
+        alert("Please choose a state name");
+        return;
+    }
+    var exists = Object.keys(states).includes(stateName);
+    states[stateName] = game.board;
+    localStorage.setItem(localStates, JSON.stringify(states));
+    if (!exists) {
+        var stateSelect = document.getElementById("state-select");
+        var newState = document.createElement("option");
+        newState.innerHTML = stateName;
+        stateSelect.appendChild(newState);
+    }
+}
+
+function loadState() {
+    var stateSelect = document.getElementById("state-select");
+    if (stateSelect.selectedIndex <= 0) {
+        alert("Please select a state");
+        return;
+    }
+    var selected = stateSelect.options[stateSelect.selectedIndex].innerHTML;
+    var states = JSON.parse(localStorage.getItem(localStates));
+    var board = states[selected];
+    game.board = board;
+    game.width = board.length;
+    game.height = board[0].length;
+    game.neighbors = init2DArray(game.width, game.height);
+    game.calculateNeighbors();
+    saveBoard();
+    var canvasWidth = (borderSize + cellSize) * game.width + borderSize;
+    var canvasHeight = (borderSize + cellSize) * game.height + borderSize;
+    createCanvas(canvasWidth, canvasHeight);
+}
+
+function deleteState() {
+    var stateSelect = document.getElementById("state-select");
+    if (stateSelect.selectedIndex <= 0) {
+        alert("Please select a state");
+        return;
+    }
+    var selected = stateSelect.options[stateSelect.selectedIndex].innerHTML;
+    var states = JSON.parse(localStorage.getItem(localStates));
+    delete states[selected];
+    localStorage.setItem(localStates, JSON.stringify(states));
+    stateSelect.removeChild(stateSelect.options[stateSelect.selectedIndex]);
+}
+
+window.addEventListener("load", populateStates);

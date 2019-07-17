@@ -41,6 +41,23 @@
             <li>
                 <button class="gray-button" onclick="game.step();">Step</button>
             </li>
+            <li>
+                <input type="text" id="state-name" placeholder="State name">
+            </li>
+            <li>
+                <button class="gray-button" onclick="saveState();">Save State</button>
+            </li>
+            <li>
+                <select id="state-select">
+                    <option>-- Select state --</option>
+                </select>
+            </li>
+            <li>
+                <button class="gray-button" onclick="loadState();">Load State</button>
+            </li>
+            <li>
+                <button class="gray-button" onclick="deleteState();">Delete State</button>
+            </li>
         </ul>
     </body>
 </html>
