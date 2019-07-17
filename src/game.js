@@ -80,4 +80,19 @@ class Game {
             this.decNeighbors(x, y);
         }
     }
+
+    resizeBoard(newWidth, newHeight) {
+        var newBoard = init2DArray(newWidth, newHeight);
+        for (var i = 0; i < newWidth; i++)
+            for (var j = 0; j < newHeight; j++)
+                if (i < this.width && j < this.height)
+                    newBoard[i][j] = this.board[i][j];
+                else
+                    newBoard[i][j] = 0;
+        this.board = newBoard;
+        this.width = newWidth;
+        this.height = newHeight;
+        this.neighbors = init2DArray(this.width, this.height);
+        this.calculateNeighbors();
+    }
 }

@@ -20,19 +20,25 @@ var toggled = [];
 const fps = 60;
 var speed = 30;
 
+function canvasResize(boardWidth, boardHeight) {
+    boardWidth = boardWidth !== undefined ? boardWidth : game.width;
+    boardHeight = boardHeight !== undefined ? boardHeight : game.height;
+    var canvasWidth = (borderSize + cellSize) * boardWidth + borderSize;
+    var canvasHeight = (borderSize + cellSize) * boardHeight + borderSize;
+    resizeCanvas(canvasWidth, canvasHeight);
+}
+
 function newGame(localSave) {
     var boardWidth = parseInt(document.getElementById("width-slider").value);
     var boardHeight = parseInt(document.getElementById("height-slider").value);
     var toroidal = document.getElementById("toroidal-checkbox").checked;
     var initChance = parseInt(document.getElementById("chance-slider").value) / 100;
-    var canvasWidth = (borderSize + cellSize) * boardWidth + borderSize;
-    var canvasHeight = (borderSize + cellSize) * boardHeight + borderSize;
     var running = game !== undefined ? game.running : false;
     game = new Game(boardWidth, boardHeight, toroidal, initChance);
     game.running = running;
     if (localSave) {
         saveBoard();
-        createCanvas(canvasWidth, canvasHeight);
+        canvasResize(boardWidth, boardHeight);
     }
 }
 
@@ -72,9 +78,7 @@ function setup() {
     newGame(false);
     loadBoard();
     saveBoard();
-    var canvasWidth = (borderSize + cellSize) * game.width + borderSize;
-    var canvasHeight = (borderSize + cellSize) * game.height + borderSize;
-    createCanvas(canvasWidth, canvasHeight);
+    canvasResize();
     noStroke();
     frameRate(fps);
 }
@@ -119,6 +123,14 @@ function draw() {
                 drawCell(i, j, deadColor);
             else if (game.board[i][j] === 1)
                 drawCell(i, j, aliveColor);
+    var widthValue = document.getElementById("width-slider").value;
+    document.getElementById("width-label").innerHTML = widthValue;
+    var heightValue = document.getElementById("height-slider").value;
+    document.getElementById("height-label").innerHTML = heightValue;
+    var chanceValue = document.getElementById("chance-slider").value;
+    document.getElementById("chance-label").innerHTML = chanceValue + "%";
+    var speedValue = document.getElementById("speed-slider").value;
+    document.getElementById("speed-label").innerHTML = speedValue;
 }
 
 function inToggled(x, y) {
@@ -148,16 +160,26 @@ function mouseReleased() {
     saveBoard();
 }
 
-function updateWidth() {
+function updateWidth(preventBoardResize) {
     var value = document.getElementById("width-slider").value;
     document.getElementById("width-label").innerHTML = value;
     localStorage.setItem(localWidth, value);
+    if (game !== undefined && !preventBoardResize) {
+        game.resizeBoard(parseInt(value), game.height);
+        saveBoard();
+        canvasResize();
+    }
 }
 
-function updateHeight() {
+function updateHeight(preventBoardResize) {
     var value = document.getElementById("height-slider").value;
     document.getElementById("height-label").innerHTML = value;
     localStorage.setItem(localHeight, value);
+    if (game !== undefined && !preventBoardResize) {
+        game.resizeBoard(game.width, parseInt(value));
+        saveBoard();
+        canvasResize();
+    }
 }
 
 function updateChance() {
@@ -169,6 +191,10 @@ function updateChance() {
 function updateToroidal() {
     var value = document.getElementById("toroidal-checkbox").checked;
     localStorage.setItem(localToroidal, value);
+    if (game !== undefined) {
+        game.toroid = value;
+        game.calculateNeighbors();
+    }
 }
 
 function updateSpeed() {
@@ -229,10 +255,12 @@ function loadState() {
     game.height = board[0].length;
     game.neighbors = init2DArray(game.width, game.height);
     game.calculateNeighbors();
+    document.getElementById("width-slider").value = game.width;
+    document.getElementById("height-slider").value = game.height;
+    updateWidth();
+    updateHeight();
     saveBoard();
-    var canvasWidth = (borderSize + cellSize) * game.width + borderSize;
-    var canvasHeight = (borderSize + cellSize) * game.height + borderSize;
-    createCanvas(canvasWidth, canvasHeight);
+    canvasResize();
 }
 
 function deleteState() {

@@ -2,7 +2,6 @@
 <html>
     <head>
         <title>Life</title>
-        <link href="https://fonts.googleapis.com/css?family=Inconsolata&display=swap" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="style.css">
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/p5.min.js"></script>
         <script type="text/javascript" src="game.js"></script>
@@ -17,7 +16,7 @@
             </li>
             <li>
                 Height: <span id="height-label">30</span>
-                <input type="range" min="1" max="48" value="30" id="height-slider" onchange="updateHeight();">
+                <input type="range" min="1" max="44" value="30" id="height-slider" onchange="updateHeight();">
             </li>
             <li>
                 Initial life chance: <span id="chance-label">50%</span>
@@ -36,27 +35,19 @@
                 <input type="range" min="1" max="60" value="30" id="speed-slider" onchange="updateSpeed();">
             </li>
             <li>
-                <button class="gray-button" onclick="toggleRunning();" id="start-button">Start</button>
+                <button class="gray-button left-input" onclick="toggleRunning();" id="start-button">Start</button><!--
+             --><button class="gray-button right-input" onclick="game.step();">Step</button>
             </li>
             <li>
-                <button class="gray-button" onclick="game.step();">Step</button>
+                <input type="text" id="state-name" class="left-input" placeholder="State name"><!--
+             --><button class="gray-button right-input" onclick="saveState();">Save State</button>
             </li>
             <li>
-                <input type="text" id="state-name" placeholder="State name">
-            </li>
-            <li>
-                <button class="gray-button" onclick="saveState();">Save State</button>
-            </li>
-            <li>
-                <select id="state-select">
+                <select id="state-select" class="left-input">
                     <option>-- Select state --</option>
-                </select>
-            </li>
-            <li>
-                <button class="gray-button" onclick="loadState();">Load State</button>
-            </li>
-            <li>
-                <button class="gray-button" onclick="deleteState();">Delete State</button>
+                </select><!--
+             --><button class="gray-button middle-input" onclick="loadState();">Load State</button><!--
+             --><button class="gray-button right-input" onclick="deleteState();">Delete State</button>
             </li>
         </ul>
     </body>
