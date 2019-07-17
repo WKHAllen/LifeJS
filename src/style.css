@@ -1,0 +1,47 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inconsolata', monospace;
+    padding: 8px 0;
+}
+
+h1 {
+    font-weight: 300;
+    padding-bottom: 8px;
+}
+
+.inline-list, .centered-text {
+    text-align: center;
+}
+
+.inline-list li {
+    display: inline-block;
+    padding: 8px;
+}
+
+.gray-button {
+    background-color: #7f7f7f;
+    color: white;
+    padding: 8px;
+    margin-top: 16px;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+}
+
+.gray-button:hover {
+    background-color: #6f6f6f;
+}
+
+.gray-button:active {
+    background-color: #5f5f5f;
+}
+
+canvas {
+    padding: 0;
+    margin: auto;
+    display: block;
+}
