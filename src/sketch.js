@@ -1,5 +1,7 @@
 var game;
 
+const bodyPadding = 8;
+
 const borderColor = [127, 127, 127];
 const deadColor   = [255, 255, 255];
 const aliveColor  = [  0,   0,   0];
@@ -14,6 +16,7 @@ const localChance = "LifeChance";
 const localSpeed = "LifeSpeed";
 const localBoard = "LifeBoard";
 const localStates = "LifeStates";
+const localStateSelected = "LifeStateSelected";
 
 var toggled = [];
 
@@ -59,17 +62,36 @@ function loadBoard() {
     }
 }
 
+function maxWidth() {
+    return Math.floor((windowWidth - 2 * bodyPadding - borderSize) / (cellSize + borderSize));
+}
+
+function maxHeight() {
+    return Math.floor((windowHeight - 2 * bodyPadding - borderSize) / (cellSize + borderSize));
+}
+
+function windowResize() {
+    console.log(maxWidth(), maxHeight());
+    document.getElementById("width-slider").max = maxWidth();
+    document.getElementById("height-slider").max = maxHeight();
+}
+
 function setup() {
+    populateStates();
+    document.getElementsByTagName("body")[0].padding = bodyPadding;
+    windowResize();
     var width = localStorage.getItem(localWidth);
     var height = localStorage.getItem(localHeight);
     var toroidal = JSON.parse(localStorage.getItem(localToroidal));
     var chance = localStorage.getItem(localChance);
     var speed = localStorage.getItem(localSpeed);
+    var stateSelected = parseInt(localStorage.getItem(localStateSelected));
     document.getElementById("width-slider").value = width !== null ? width : 40;
     document.getElementById("height-slider").value = height !== null ? height : 30;
     document.getElementById("toroidal-checkbox").checked = toroidal !== null ? toroidal : true;
     document.getElementById("chance-slider").value = chance !== null ? chance : 50;
     document.getElementById("speed-slider").value = speed !== null ? speed : 30;
+    document.getElementById("state-select").selectedIndex = stateSelected !== null ? stateSelected : 0;
     updateWidth();
     updateHeight();
     updateToroidal();
@@ -204,6 +226,11 @@ function updateSpeed() {
     speed = value;
 }
 
+function updateStateSelect() {
+    var value = document.getElementById("state-select").selectedIndex;
+    localStorage.setItem(localStateSelected, value);
+}
+
 function stripWhitespace(str) {
     return str.replace(/^\s+|\s+$/g, "");
 }
@@ -275,5 +302,3 @@ function deleteState() {
     localStorage.setItem(localStates, JSON.stringify(states));
     stateSelect.removeChild(stateSelect.options[stateSelect.selectedIndex]);
 }
-
-window.addEventListener("load", populateStates);

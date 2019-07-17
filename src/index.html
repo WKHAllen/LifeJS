@@ -12,11 +12,11 @@
         <ul class="inline-list">
             <li>
                 Width: <span id="width-label">40</span>
-                <input type="range" min="1" max="112" value="40" id="width-slider" onchange="updateWidth();">
+                <input type="range" min="1" max="100" value="40" id="width-slider" onchange="updateWidth();">
             </li>
             <li>
                 Height: <span id="height-label">30</span>
-                <input type="range" min="1" max="44" value="30" id="height-slider" onchange="updateHeight();">
+                <input type="range" min="1" max="40" value="30" id="height-slider" onchange="updateHeight();">
             </li>
             <li>
                 Initial life chance: <span id="chance-label">50%</span>
@@ -43,7 +43,7 @@
              --><button class="gray-button right-input" onclick="saveState();">Save State</button>
             </li>
             <li>
-                <select id="state-select" class="left-input">
+                <select id="state-select" class="left-input" onchange="updateStateSelect();">
                     <option>-- Select state --</option>
                 </select><!--
              --><button class="gray-button middle-input" onclick="loadState();">Load State</button><!--
