@@ -1,13 +1,13 @@
 var game;
 
-const bodyPadding = 8;
+var bodyPadding = 8;
 
 const borderColor = [127, 127, 127];
 const deadColor   = [255, 255, 255];
 const aliveColor  = [  0,   0,   0];
 
-const borderSize = 1;
-const cellSize = 16;
+var borderSize = 1;
+var cellSize = 16;
 
 const localWidth = "LifeWidth";
 const localHeight = "LifeHeight";
@@ -17,6 +17,7 @@ const localSpeed = "LifeSpeed";
 const localBoard = "LifeBoard";
 const localStates = "LifeStates";
 const localStateSelected = "LifeStateSelected";
+const localCellSize = "LifeCellSize";
 
 var toggled = [];
 
@@ -76,21 +77,26 @@ function windowResized() {
 }
 
 function setup() {
+    if (localStorage.getItem(localStates) === null)
+        localStorage.setItem(localStates, JSON.stringify(initStates));
     populateStates();
     document.getElementsByTagName("body")[0].padding = bodyPadding;
     windowResized();
-    var width = localStorage.getItem(localWidth);
-    var height = localStorage.getItem(localHeight);
+    var savedCellSize = parseInt(localStorage.getItem(localCellSize));
+    var boardWidth = localStorage.getItem(localWidth);
+    var boardHeight = localStorage.getItem(localHeight);
     var toroidal = JSON.parse(localStorage.getItem(localToroidal));
     var chance = localStorage.getItem(localChance);
     var speed = localStorage.getItem(localSpeed);
     var stateSelected = parseInt(localStorage.getItem(localStateSelected));
-    document.getElementById("width-slider").value = width !== null ? width : 40;
-    document.getElementById("height-slider").value = height !== null ? height : 30;
+    document.getElementById("size-slider").value = savedCellSize !== null ? savedCellSize : 16;
+    document.getElementById("width-slider").value = boardWidth !== null ? boardWidth : 40;
+    document.getElementById("height-slider").value = boardHeight !== null ? boardHeight : 30;
     document.getElementById("toroidal-checkbox").checked = toroidal !== null ? toroidal : true;
     document.getElementById("chance-slider").value = chance !== null ? chance : 50;
     document.getElementById("speed-slider").value = speed !== null ? speed : 30;
     document.getElementById("state-select").selectedIndex = stateSelected !== null ? stateSelected : 0;
+    updateCellSize();
     updateWidth();
     updateHeight();
     updateToroidal();
@@ -152,6 +158,8 @@ function draw() {
     document.getElementById("chance-label").innerHTML = chanceValue + "%";
     var speedValue = document.getElementById("speed-slider").value;
     document.getElementById("speed-label").innerHTML = speedValue;
+    var sizeValue = document.getElementById("size-slider").value;
+    document.getElementById("size-label").innerHTML = sizeValue;
 }
 
 function inToggled(x, y) {
@@ -222,12 +230,28 @@ function updateSpeed() {
     var value = document.getElementById("speed-slider").value;
     document.getElementById("speed-label").innerHTML = value;
     localStorage.setItem(localSpeed, value);
-    speed = value;
+    speed = parseInt(value);
 }
 
 function updateStateSelect() {
     var value = document.getElementById("state-select").selectedIndex;
     localStorage.setItem(localStateSelected, value);
+}
+
+// currently adding cell size functionality
+// current problems:
+//     resizing canvas after cell size update
+//     properly loading cell size initially
+
+function updateCellSize() {
+    var value = document.getElementById("size-slider").value;
+    document.getElementById("size-label").innerHTML = value;
+    localStorage.setItem(localCellSize, value);
+    cellSize = parseInt(value);
+    if (game !== undefined) {
+        canvasResize();
+    }
+    windowResized();
 }
 
 function stripWhitespace(str) {

@@ -5,6 +5,7 @@
         <link rel="stylesheet" type="text/css" href="style.css">
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.3/p5.min.js"></script>
         <script type="text/javascript" src="game.js"></script>
+        <script type="text/javascript" src="states.js"></script>
         <script type="text/javascript" src="sketch.js"></script>
     </head>
     <body>
@@ -24,6 +25,10 @@
             </li>
             <li>
                 Toroidal: <input type="checkbox" id="toroidal-checkbox" onchange="updateToroidal();">
+            </li>
+            <li>
+                Scale: <span id="size-label">16px</span>
+                <input type="range" min="4" max="64" value="16" id="size-slider" onchange="updateCellSize();">
             </li>
             <li>
                 <button class="gray-button" onclick="newGame(true);">New Game</button>
