@@ -82,26 +82,33 @@ function setup() {
     populateStates();
     document.getElementsByTagName("body")[0].padding = bodyPadding;
     windowResized();
+    // scale
     var savedCellSize = parseInt(localStorage.getItem(localCellSize));
-    var boardWidth = localStorage.getItem(localWidth);
-    var boardHeight = localStorage.getItem(localHeight);
-    var toroidal = JSON.parse(localStorage.getItem(localToroidal));
-    var chance = localStorage.getItem(localChance);
-    var speed = localStorage.getItem(localSpeed);
-    var stateSelected = parseInt(localStorage.getItem(localStateSelected));
     document.getElementById("size-slider").value = savedCellSize !== null ? savedCellSize : 16;
-    document.getElementById("width-slider").value = boardWidth !== null ? boardWidth : 40;
-    document.getElementById("height-slider").value = boardHeight !== null ? boardHeight : 30;
-    document.getElementById("toroidal-checkbox").checked = toroidal !== null ? toroidal : true;
-    document.getElementById("chance-slider").value = chance !== null ? chance : 50;
-    document.getElementById("speed-slider").value = speed !== null ? speed : 30;
-    document.getElementById("state-select").selectedIndex = stateSelected !== null ? stateSelected : 0;
     updateCellSize();
+    // width
+    var boardWidth = localStorage.getItem(localWidth);
+    document.getElementById("width-slider").value = boardWidth !== null ? boardWidth : 40;
     updateWidth();
+    // height
+    var boardHeight = localStorage.getItem(localHeight);
+    document.getElementById("height-slider").value = boardHeight !== null ? boardHeight : 30;
     updateHeight();
+    // toroidal
+    var toroidal = JSON.parse(localStorage.getItem(localToroidal));
+    document.getElementById("toroidal-checkbox").checked = toroidal !== null ? toroidal : true;
     updateToroidal();
+    // chance
+    var chance = localStorage.getItem(localChance);
+    document.getElementById("chance-slider").value = chance !== null ? chance : 50;
     updateChance();
+    // speed
+    var speed = localStorage.getItem(localSpeed);
+    document.getElementById("speed-slider").value = speed !== null ? speed : 30;
     updateSpeed();
+    // state selected
+    var stateSelected = parseInt(localStorage.getItem(localStateSelected));
+    document.getElementById("state-select").selectedIndex = stateSelected !== null ? stateSelected : 0;
     newGame(false);
     loadBoard();
     saveBoard();
@@ -237,11 +244,6 @@ function updateStateSelect() {
     var value = document.getElementById("state-select").selectedIndex;
     localStorage.setItem(localStateSelected, value);
 }
-
-// currently adding cell size functionality
-// current problems:
-//     resizing canvas after cell size update
-//     properly loading cell size initially
 
 function updateCellSize() {
     var value = document.getElementById("size-slider").value;
