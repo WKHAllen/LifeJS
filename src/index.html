@@ -9,51 +9,69 @@
         <script type="text/javascript" src="sketch.js"></script>
     </head>
     <body>
-        <h1 class="centered-text">Conway's Game of Life</h1>
-        <ul class="inline-list">
-            <li>
-                Width: <span id="width-label">40</span>
-                <input type="range" min="1" max="100" value="40" id="width-slider" onchange="updateWidth();">
-            </li>
-            <li>
-                Height: <span id="height-label">30</span>
-                <input type="range" min="1" max="40" value="30" id="height-slider" onchange="updateHeight();">
-            </li>
-            <li>
-                Initial life chance: <span id="chance-label">50%</span>
-                <input type="range" min="0" max="100" value="50" id="chance-slider" onchange="updateChance();">
-            </li>
-            <li>
-                Toroidal: <input type="checkbox" id="toroidal-checkbox" onchange="updateToroidal();">
-            </li>
-            <li>
-                Scale: <span id="size-label">16px</span>
-                <input type="range" min="4" max="64" value="16" id="size-slider" onchange="updateCellSize();">
-            </li>
-            <li>
-                <button class="gray-button" onclick="newGame(true);">New Game</button>
-            </li>
-        </ul>
-        <ul class="inline-list">
-            <li>
-                Speed: <span id="speed-label"></span>
-                <input type="range" min="1" max="60" value="30" id="speed-slider" onchange="updateSpeed();">
-            </li>
-            <li>
-                <button class="gray-button left-input" onclick="toggleRunning();" id="start-button">Start</button><!--
-             --><button class="gray-button right-input" onclick="game.step();">Step</button>
-            </li>
-            <li>
-                <input type="text" id="state-name" class="left-input" placeholder="State name"><!--
-             --><button class="gray-button right-input" onclick="saveState();">Save State</button>
-            </li>
-            <li>
-                <select id="state-select" class="left-input" onchange="updateStateSelect();">
-                    <option>-- Select state --</option>
-                </select><!--
-             --><button class="gray-button middle-input" onclick="loadState();">Load State</button><!--
-             --><button class="gray-button right-input" onclick="deleteState();">Delete State</button>
-            </li>
-        </ul>
+        <header>
+            <h1 class="centered-text">Conway's Game of Life</h1>
+        </header>
+        <main>
+            <div id="alert-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeModal();">&times;</span>
+                    <p class="modal-text" id="alert-text"></p>
+                </div>
+            </div>
+            <div class="menu">
+                <ul class="inline-list">
+                    <li>
+                        Width: <span id="width-label">40</span>
+                        <input type="range" min="1" max="100" value="40" id="width-slider" onchange="updateWidth();">
+                    </li>
+                    <li>
+                        Height: <span id="height-label">30</span>
+                        <input type="range" min="1" max="40" value="30" id="height-slider" onchange="updateHeight();">
+                    </li>
+                    <li>
+                        Initial life chance: <span id="chance-label">50%</span>
+                        <input type="range" min="0" max="100" value="50" id="chance-slider" onchange="updateChance();">
+                    </li>
+                    <li>
+                        <label class="checkbox-container">
+                            Toroidal
+                            <input type="checkbox" id="toroidal-checkbox" onchange="updateToroidal();">
+                            <span class="checkmark"></span>
+                        </label>
+                    </li>
+                    <li>
+                        Scale: <span id="size-label">16px</span>
+                        <input type="range" min="4" max="64" value="16" id="size-slider" onchange="updateCellSize();">
+                    </li>
+                    <li>
+                        <button class="main-button" onclick="newGame(true);">New Game</button>
+                    </li>
+                </ul>
+                <ul class="inline-list">
+                    <li>
+                        Speed: <span id="speed-label"></span>
+                        <input type="range" min="1" max="60" value="30" id="speed-slider" onchange="updateSpeed();">
+                    </li>
+                    <li>
+                        <button class="main-button left-input" onclick="toggleRunning();" id="start-button">Start</button><!--
+                    --><button class="main-button right-input" onclick="game.step();">Step</button>
+                    </li>
+                    <li>
+                        <input type="text" id="state-name" class="left-input" placeholder="State name"><!--
+                    --><button class="main-button right-input" onclick="saveState();">Save State</button>
+                    </li>
+                    <li>
+                        <select id="state-select" class="left-input" onchange="updateStateSelect();">
+                            <option>-- Select state --</option>
+                        </select><!--
+                    --><button class="main-button middle-input" onclick="loadState();">Load State</button><!--
+                    --><button class="main-button right-input" onclick="deleteState();">Delete State</button>
+                    </li>
+                </ul>
+            </div>
+            <div id="canvas-container">
+            </div>
+        </main>
     </body>
 </html>

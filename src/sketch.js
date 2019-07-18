@@ -1,6 +1,6 @@
 var game;
 
-var bodyPadding = 8;
+var padding = 16;
 
 const borderColor = [127, 127, 127];
 const deadColor   = [255, 255, 255];
@@ -64,11 +64,11 @@ function loadBoard() {
 }
 
 function maxWidth() {
-    return Math.floor((windowWidth - 2 * bodyPadding - borderSize) / (cellSize + borderSize));
+    return Math.floor((windowWidth - 2 * padding - borderSize) / (cellSize + borderSize));
 }
 
 function maxHeight() {
-    return Math.floor((windowHeight - 2 * bodyPadding - borderSize) / (cellSize + borderSize));
+    return Math.floor((windowHeight - 2 * padding - borderSize) / (cellSize + borderSize));
 }
 
 function windowResized() {
@@ -77,10 +77,12 @@ function windowResized() {
 }
 
 function setup() {
+    var canvas = createCanvas(0, 0);
+    canvas.parent("canvas-container");
     if (localStorage.getItem(localStates) === null)
         localStorage.setItem(localStates, JSON.stringify(initStates));
     populateStates();
-    document.getElementsByTagName("body")[0].padding = bodyPadding;
+    document.getElementsByTagName("body")[0].padding = padding;
     windowResized();
     // scale
     var savedCellSize = parseInt(localStorage.getItem(localCellSize));
@@ -279,7 +281,7 @@ function saveState() {
     var states = JSON.parse(localStorage.getItem(localStates));
     var stateName = stripWhitespace(document.getElementById("state-name").value);
     if (stateName === "") {
-        alert("Please choose a state name");
+        showModal("Please choose a state name");
         return;
     }
     var exists = Object.keys(states).includes(stateName);
@@ -296,7 +298,7 @@ function saveState() {
 function loadState() {
     var stateSelect = document.getElementById("state-select");
     if (stateSelect.selectedIndex <= 0) {
-        alert("Please select a state");
+        showModal("Please select a state");
         return;
     }
     var selected = stateSelect.options[stateSelect.selectedIndex].innerHTML;
@@ -318,7 +320,7 @@ function loadState() {
 function deleteState() {
     var stateSelect = document.getElementById("state-select");
     if (stateSelect.selectedIndex <= 0) {
-        alert("Please select a state");
+        showModal("Please select a state");
         return;
     }
     var selected = stateSelect.options[stateSelect.selectedIndex].innerHTML;
@@ -326,4 +328,18 @@ function deleteState() {
     delete states[selected];
     localStorage.setItem(localStates, JSON.stringify(states));
     stateSelect.removeChild(stateSelect.options[stateSelect.selectedIndex]);
+}
+
+function showModal(text) {
+    document.getElementById("alert-text").innerHTML = text;
+    document.getElementById("alert-modal").style.display = "block";
+}
+
+function closeModal() {
+    document.getElementById("alert-modal").style.display = "none";
+}
+
+window.onclick = function(event) {
+    if (event.target === document.getElementById("alert-modal"))
+        closeModal();
 }
