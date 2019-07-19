@@ -24,6 +24,7 @@ class Game {
                 this.board[i][j] = Math.random() >= initChance ? 0 : 1;
         this.neighbors = init2DArray(this.width, this.height);
         this.calculateNeighbors();
+        this.generation = 0;
     }
 
     numNeighbors(board, x, y) {
@@ -69,6 +70,7 @@ class Game {
                     this.toggle(i, j);
                 else if (oldNeighbors[i][j] === 3 && this.board[i][j] === 0)
                     this.toggle(i, j);
+        this.generation++;
     }
 
     toggle(x, y) {

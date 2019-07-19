@@ -21,7 +21,6 @@ header h1 {
 .menu {
     background-color: #efefef;
     padding: 16px;
-    padding-bottom: 28px;
 }
 
 .centered-text {
@@ -29,7 +28,7 @@ header h1 {
 }
 
 .inline-list {
-    margin-top: 8px;
+    padding: 8px 0;
     text-align: center;
 }
 
@@ -50,10 +49,12 @@ header h1 {
 
 .main-button:hover {
     background-color: #004fef;
+    cursor: pointer;
 }
 
 .main-button:active {
     background-color: #003fdf;
+    cursor: pointer;
 }
 
 .left-input {

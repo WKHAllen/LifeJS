@@ -85,8 +85,8 @@ function setup() {
     document.getElementsByTagName("body")[0].padding = padding;
     windowResized();
     // scale
-    var savedCellSize = parseInt(localStorage.getItem(localCellSize));
-    document.getElementById("size-slider").value = savedCellSize !== null ? savedCellSize : 16;
+    var savedCellSize = localStorage.getItem(localCellSize);
+    document.getElementById("size-slider").value = savedCellSize !== null ? parseInt(savedCellSize) : 16;
     updateCellSize();
     // width
     var boardWidth = localStorage.getItem(localWidth);
@@ -97,8 +97,8 @@ function setup() {
     document.getElementById("height-slider").value = boardHeight !== null ? boardHeight : 30;
     updateHeight();
     // toroidal
-    var toroidal = JSON.parse(localStorage.getItem(localToroidal));
-    document.getElementById("toroidal-checkbox").checked = toroidal !== null ? toroidal : true;
+    var toroidal = localStorage.getItem(localToroidal);
+    document.getElementById("toroidal-checkbox").checked = toroidal !== null ? JSON.parse(toroidal) : true;
     updateToroidal();
     // chance
     var chance = localStorage.getItem(localChance);
@@ -109,8 +109,8 @@ function setup() {
     document.getElementById("speed-slider").value = speed !== null ? speed : 30;
     updateSpeed();
     // state selected
-    var stateSelected = parseInt(localStorage.getItem(localStateSelected));
-    document.getElementById("state-select").selectedIndex = stateSelected !== null ? stateSelected : 0;
+    var stateSelected = localStorage.getItem(localStateSelected);
+    document.getElementById("state-select").selectedIndex = stateSelected !== null ? parseInt(stateSelected) : 0;
     newGame(false);
     loadBoard();
     saveBoard();
@@ -169,6 +169,7 @@ function draw() {
     document.getElementById("speed-label").innerHTML = speedValue;
     var sizeValue = document.getElementById("size-slider").value;
     document.getElementById("size-label").innerHTML = sizeValue;
+    document.getElementById("generation").innerHTML = game.generation;
 }
 
 function inToggled(x, y) {
@@ -281,7 +282,7 @@ function saveState() {
     var states = JSON.parse(localStorage.getItem(localStates));
     var stateName = stripWhitespace(document.getElementById("state-name").value);
     if (stateName === "") {
-        showModal("Please choose a state name");
+        showModal("Please choose a name for this state");
         return;
     }
     var exists = Object.keys(states).includes(stateName);
@@ -298,7 +299,7 @@ function saveState() {
 function loadState() {
     var stateSelect = document.getElementById("state-select");
     if (stateSelect.selectedIndex <= 0) {
-        showModal("Please select a state");
+        showModal("Please select a state to load");
         return;
     }
     var selected = stateSelect.options[stateSelect.selectedIndex].innerHTML;
@@ -320,7 +321,7 @@ function loadState() {
 function deleteState() {
     var stateSelect = document.getElementById("state-select");
     if (stateSelect.selectedIndex <= 0) {
-        showModal("Please select a state");
+        showModal("Please select a state to delete");
         return;
     }
     var selected = stateSelect.options[stateSelect.selectedIndex].innerHTML;
